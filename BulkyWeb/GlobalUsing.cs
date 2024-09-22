@@ -2,6 +2,8 @@
 global using BulkyBook.DataAccess.Data;
 global using BulkyBook.DataAccess.Repository;
 global using BulkyBook.DataAccess.Repository.IRepository;
-global using BulkyBook.Models;
+global using BulkyBook.Models.Models;
+global using BulkyBook.Models.ViewModels;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Rendering;
 global using Microsoft.EntityFrameworkCore;
