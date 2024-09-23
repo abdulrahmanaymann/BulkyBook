@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BulkyBook.Models.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BulkyBook.Models
 {
@@ -15,5 +18,11 @@ namespace BulkyBook.Models
         public string? State { get; set; }
 
         public string? PostalCode { get; set; }
+
+        public int? CompanyId { get; set; }
+
+        [ForeignKey("CompanyId")]
+        [ValidateNever]
+        public Company Company { get; set; }
     }
 }
