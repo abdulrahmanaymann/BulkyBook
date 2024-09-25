@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240923202630_AddCompanyTabel")]
-    partial class AddCompanyTabel
+    [Migration("20240924200201_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,44 +44,6 @@ namespace BulkyBook.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DisplayOrder = 1,
-                            Name = "Web Development"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DisplayOrder = 2,
-                            Name = "Programming Languages"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DisplayOrder = 3,
-                            Name = "Databases"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DisplayOrder = 4,
-                            Name = "DevOps"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DisplayOrder = 5,
-                            Name = "Software Testing"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DisplayOrder = 6,
-                            Name = "Mobile Development"
-                        });
                 });
 
             modelBuilder.Entity("BulkyBook.Models.Models.Company", b =>
@@ -164,92 +126,33 @@ namespace BulkyBook.DataAccess.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Author = "Author 1",
-                            CategoryId = 1,
-                            Description = "Description 1",
-                            ISBN = "ISBN 1",
-                            ImageUrl = "",
-                            ListPrice = 10.99,
-                            Price = 9.9900000000000002,
-                            Price100 = 7.9900000000000002,
-                            Price50 = 8.9900000000000002,
-                            Title = "Book 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Author = "Author 2",
-                            CategoryId = 2,
-                            Description = "Description 2",
-                            ISBN = "ISBN 2",
-                            ImageUrl = "",
-                            ListPrice = 20.989999999999998,
-                            Price = 19.989999999999998,
-                            Price100 = 17.989999999999998,
-                            Price50 = 18.989999999999998,
-                            Title = "Book 2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Author = "Author 3",
-                            CategoryId = 3,
-                            Description = "Description 3",
-                            ISBN = "ISBN 3",
-                            ImageUrl = "",
-                            ListPrice = 30.989999999999998,
-                            Price = 29.989999999999998,
-                            Price100 = 27.989999999999998,
-                            Price50 = 28.989999999999998,
-                            Title = "Book 3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Author = "Author 4",
-                            CategoryId = 4,
-                            Description = "Description 4",
-                            ISBN = "ISBN 4",
-                            ImageUrl = "",
-                            ListPrice = 40.990000000000002,
-                            Price = 39.990000000000002,
-                            Price100 = 37.990000000000002,
-                            Price50 = 38.990000000000002,
-                            Title = "Book 4"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Author = "Author 5",
-                            CategoryId = 2,
-                            Description = "Description 5",
-                            ISBN = "ISBN 5",
-                            ImageUrl = "",
-                            ListPrice = 50.990000000000002,
-                            Price = 49.990000000000002,
-                            Price100 = 47.990000000000002,
-                            Price50 = 48.990000000000002,
-                            Title = "Book 5"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Author = "Author 6",
-                            CategoryId = 1,
-                            Description = "Description 6",
-                            ISBN = "ISBN 6",
-                            ImageUrl = "",
-                            ListPrice = 60.990000000000002,
-                            Price = 59.990000000000002,
-                            Price100 = 57.990000000000002,
-                            Price50 = 58.990000000000002,
-                            Title = "Book 6"
-                        });
+            modelBuilder.Entity("BulkyBook.Models.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -466,6 +369,9 @@ namespace BulkyBook.DataAccess.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -479,6 +385,8 @@ namespace BulkyBook.DataAccess.Migrations
                     b.Property<string>("StreetAddress")
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
@@ -491,6 +399,25 @@ namespace BulkyBook.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("BulkyBook.Models.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("BulkyBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BulkyBook.Models.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -542,6 +469,15 @@ namespace BulkyBook.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BulkyBook.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("BulkyBook.Models.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.Navigation("Company");
                 });
 #pragma warning restore 612, 618
         }

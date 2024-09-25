@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 namespace BulkyBookWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
@@ -20,9 +22,49 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            Product product = _unitOfWork.ProductRepository
-                .Get(p => p.Id == id, includeProperties: "Category");
-            return View(product);
+            ShoppingCart cart = new()
+            {
+                Product = _unitOfWork.ProductRepository
+                .Get(u => u.Id == id, includeProperties: "Category"),
+                Count = 1,
+                ProductId = id
+            };
+
+            return View(cart);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart cart)
+        {
+            // Get the user id from the claims identity
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            cart.ApplicationUserId = userId;
+
+            // Check if the product is already in the shopping cart
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCartRepository
+                .Get(u => u.ApplicationUserId == cart.ApplicationUserId
+                && u.ProductId == cart.ProductId);
+
+            if (cartFromDb != null)
+            {
+                // Product is already in the cart, update count
+                cart.Count += 1;
+                _unitOfWork.ShoppingCartRepository.Update(cartFromDb);
+            }
+            else
+            {
+                cart.Id = 0; // fix 'Cannot insert explicit value for identity column
+                             // in table 'ShoppingCarts' when IDENTITY_INSERT is set to OFF'
+                _unitOfWork.ShoppingCartRepository.Add(cart);
+            }
+
+            TempData["Success"] = "Item added to cart successfully";
+
+            _unitOfWork.Save();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
