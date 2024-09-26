@@ -1,7 +1,9 @@
 ﻿global using System.Diagnostics;
+global using System.Security.Claims;
 global using BulkyBook.DataAccess.Data;
 global using BulkyBook.DataAccess.Repository;
 global using BulkyBook.DataAccess.Repository.IRepository;
+global using BulkyBook.Models;
 global using BulkyBook.Models.Models;
 global using BulkyBook.Models.ViewModels;
 global using BulkyBook.Utility;

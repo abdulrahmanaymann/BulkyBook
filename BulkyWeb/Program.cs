@@ -1,3 +1,5 @@
+using Stripe;
+
 namespace BulkyBookWeb
 {
     public class Program
@@ -13,6 +15,10 @@ namespace BulkyBookWeb
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add StripeSettings to the container.
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+            // Add Identity to the container.
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -42,6 +48,10 @@ namespace BulkyBookWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Add Stripe configuration.
+            StripeConfiguration.ApiKey = app.Configuration
+                .GetSection("Stripe:SecretKey").Get<String>();
 
             app.UseRouting();
 
