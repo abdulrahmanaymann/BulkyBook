@@ -5,6 +5,10 @@
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
+        [BindProperty]
+        public OrderViewModel OrderVM { get; set; }
+
         public OrderController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -15,18 +19,18 @@
             return View();
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int orderId)
         {
-            OrderViewModel orderVM = new()
+            OrderVM = new()
             {
                 OrderHeader = _unitOfWork.OrderHeaderRepository
-                .Get(u => u.Id == id, includeProperties: "ApplicationUser"),
+                .Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
 
                 OrderDetails = _unitOfWork.OrderDetailRepository
-                .GetAll(u => u.OrderHeaderId == id, includeProperties: "Product")
+                .GetAll(u => u.OrderHeaderId == orderId, includeProperties: "Product")
             };
 
-            return View(orderVM);
+            return View(OrderVM);
         }
 
         #region API CALLS
