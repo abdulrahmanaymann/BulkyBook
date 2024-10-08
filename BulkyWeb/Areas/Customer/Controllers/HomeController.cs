@@ -14,6 +14,15 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (claim != null)
+            {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCartRepository
+                    .GetAll(u => u.ApplicationUserId == claim.Value).Count());
+            }
+
             IEnumerable<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
             return View(productList);
         }
@@ -50,17 +59,20 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 // Product is already in the cart, update count
                 cart.Count += 1;
                 _unitOfWork.ShoppingCartRepository.Update(cartFromDb);
+                _unitOfWork.Save();
             }
             else
             {
                 cart.Id = 0; // fix 'Cannot insert explicit value for identity column
                              // in table 'ShoppingCarts' when IDENTITY_INSERT is set to OFF'
                 _unitOfWork.ShoppingCartRepository.Add(cart);
+                _unitOfWork.Save();
+
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCartRepository
+                    .GetAll(u => u.ApplicationUserId == userId).Count());
             }
 
             TempData["Success"] = "Item added to cart successfully";
-
-            _unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));
         }

@@ -30,6 +30,20 @@ namespace BulkyBookWeb
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
+            builder.Services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = builder.Configuration["FacebookAuthentication:AppId"];
+                options.AppSecret = builder.Configuration["FacebookAuthentication:AppSecret"];
+            });
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             builder.Services.AddRazorPages();
 
             // Register repositories.
@@ -58,6 +72,8 @@ namespace BulkyBookWeb
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapRazorPages();
 
