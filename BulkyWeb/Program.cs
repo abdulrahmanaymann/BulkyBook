@@ -1,3 +1,4 @@
+using BulkyBook.DataAccess.DBInitializer;
 using Stripe;
 
 namespace BulkyBookWeb
@@ -49,6 +50,7 @@ namespace BulkyBookWeb
             // Register repositories.
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 
             var app = builder.Build();
 
@@ -75,6 +77,8 @@ namespace BulkyBookWeb
 
             app.UseSession();
 
+            SeedDatabase();
+
             app.MapRazorPages();
 
             app.MapControllerRoute(
@@ -82,6 +86,15 @@ namespace BulkyBookWeb
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            void SeedDatabase()
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+                    dbInitializer.Initialize();
+                }
+            }
         }
     }
 }
