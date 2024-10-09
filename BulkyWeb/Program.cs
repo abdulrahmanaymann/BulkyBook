@@ -63,6 +63,7 @@ namespace BulkyBookWeb
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             // Add Stripe configuration.

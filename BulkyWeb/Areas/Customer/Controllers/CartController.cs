@@ -7,11 +7,16 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
+        private readonly IEmailSender _emailSender;
+
         [BindProperty]
         public ShoppingCartViewModel CartViewModel { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _unitOfWork = unitOfWork;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -188,6 +193,9 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
                 HttpContext.Session.Clear();
             }
+
+            _emailSender.SendEmailAsync(order.ApplicationUser.Email, "New Order - Bulky Book",
+                $"<p>Order has been submitted successfully - {order.Id}</p>");
 
             List<ShoppingCart> carts = _unitOfWork.ShoppingCartRepository
                 .GetAll(u => u.ApplicationUserId == order.ApplicationUserId).ToList();
