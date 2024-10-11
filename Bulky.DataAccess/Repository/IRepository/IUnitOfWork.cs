@@ -16,6 +16,8 @@
 
         IOrderDetailRepository OrderDetailRepository { get; }
 
+        IProductImageRepository ProductImageRepository { get; }
+
         void Save();
     }
 }

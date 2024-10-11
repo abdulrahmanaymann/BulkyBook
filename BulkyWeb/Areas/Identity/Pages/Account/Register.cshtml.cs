@@ -1,6 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-//#nullable disable
+#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -32,14 +32,14 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             IUnitOfWork unitOfWork)
         {
-            _userManager = userManager;
+            _unitOfWork = unitOfWork;
             _roleManager = roleManager;
+            _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            public string? Role { get; set; }
 
+            public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
@@ -108,7 +108,6 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             public string? PostalCode { get; set; }
             public string? PhoneNumber { get; set; }
             public int? CompanyId { get; set; }
-
             [ValidateNever]
             public IEnumerable<SelectListItem> CompanyList { get; set; }
 

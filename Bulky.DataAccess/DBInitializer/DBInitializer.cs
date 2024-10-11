@@ -8,52 +8,60 @@ namespace BulkyBook.DataAccess.DBInitializer
 {
     public class DBInitializer : IDBInitializer
     {
+
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public DBInitializer(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+        public DBInitializer(
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext db)
         {
-            _userManager = userManager;
             _roleManager = roleManager;
-            _context = context;
+            _userManager = userManager;
+            _db = db;
         }
+
 
         public void Initialize()
         {
+            //migrations if they are not applied
             try
             {
-                if (_context.Database.GetPendingMigrations().Count() > 0)
+                if (_db.Database.GetPendingMigrations().Count() > 0)
                 {
-                    _context.Database.Migrate();
+                    _db.Database.Migrate();
                 }
             }
-
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
+            //create roles if they are not created
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
 
+
+                //if roles are not created, then we will create admin user as well
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "Ezio",
-                    Email = "ezio@gmail.com",
+                    UserName = "admin@bulky.com",
+                    Email = "admin@bulky.com",
                     Name = "Ezio Auditore",
-                    PhoneNumber = "1234567890",
-                    StreetAddress = "123 Test St",
-                    City = "Test City",
-                    State = "Test State",
-                    PostalCode = "12345"
+                    PhoneNumber = "1112223333",
+                    StreetAddress = "test 123 Ave",
+                    State = "IL",
+                    PostalCode = "23422",
+                    City = "Chicago"
                 }, "Admin123!").GetAwaiter().GetResult();
 
-                ApplicationUser user = _context.ApplicationUsers.FirstOrDefault(u => u.Email == "ezio@gmail.com");
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@bulky.com");
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
             }
 

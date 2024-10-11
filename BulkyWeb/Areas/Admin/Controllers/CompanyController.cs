@@ -4,7 +4,7 @@
     [Authorize(Roles = SD.Role_Admin)]
     public class CompanyController : Controller
     {
-        IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         public CompanyController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

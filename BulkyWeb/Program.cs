@@ -31,26 +31,42 @@ namespace BulkyBookWeb
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
             });
 
+            // Add Facebook authentication.
             builder.Services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = builder.Configuration["FacebookAuthentication:AppId"];
-                options.AppSecret = builder.Configuration["FacebookAuthentication:AppSecret"];
+                options.AppId = builder.Configuration["FacebookAuthentication:AppId"]!;
+                options.AppSecret = builder.Configuration["FacebookAuthentication:AppSecret"]!;
+            });
+
+            // Add Microsoft authentication.
+            builder.Services.AddAuthentication().AddMicrosoftAccount(options =>
+            {
+                options.ClientId = builder.Configuration["MicrosoftAuthentication:ClientId"]!;
+                options.ClientSecret = builder.Configuration["MicrosoftAuthentication:ClientSecret"]!;
+            });
+
+            // Add Google authentication.
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"]!;
+                options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"]!;
             });
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(100);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
 
-            builder.Services.AddRazorPages();
 
             // Register repositories.
+            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
-            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
+
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
