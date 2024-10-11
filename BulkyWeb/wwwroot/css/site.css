@@ -549,3 +549,75 @@ bg-success {
         background-color: #578553;
         border-color: #578553;
     }
+
+:root {
+    --dark-blue: #192E2F;
+    --light-blue: #1b6ec2;
+    --dark-green: #4b7147;
+    --green: #578553;
+    --dark-gray: #425F4B;
+    --gray: #e5e5e5;
+    --light-gray: #555;
+    --orange-warning: #BD7418;
+    --dark-orange: #C07b24;
+    --dark-red: #CA1929;
+    --red: #d9534f;
+    --teal: #134b5f;
+    --light-teal: #1a6985;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--light-blue);
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.divider-text:before,
+.divider-text:after {
+    color: white;
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--light-gray);
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+}
+
+.header {
+    background-color: var(--dark-blue);
+}
+
+.button-warning {
+    background-color: var(--orange-warning);
+    color: white;
+}
+
+.card {
+    border: 1px solid var(--dark-gray);
+    background-color: var(--gray);
+}
+
+.alert {
+    background-color: var(--dark-red);
+    color: white;
+}

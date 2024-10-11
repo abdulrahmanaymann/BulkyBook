@@ -40,13 +40,13 @@
 
 
                                 </div>
-                                <div class="carousel-inner">
+                                <div class="carousel-inner border rounded-3 overflow-hidden shadow-lg">
                                     @foreach (var imageWithIndex in
                                    Model.Product.ProductImages
                                    .Select((image, index) => new { Image = image, Index = index }))
                                     {
-                                        <div class="@(imageWithIndex.Index==0?"carousel-item active":"carousel-item")">
-                                            <img src="@imageWithIndex.Image.ImageUrl" class="d-block w-100" alt="...">
+                                        <div class="@(imageWithIndex.Index == 0 ? "carousel-item active" : "carousel-item")">
+                                            <img src="@imageWithIndex.Image.ImageUrl" class="d-block w-100 img-fluid" alt="..." style="transition: transform 0.5s ease-in-out;">
                                         </div>
                                     }
                                 </div>

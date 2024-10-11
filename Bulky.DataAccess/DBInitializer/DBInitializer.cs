@@ -51,7 +51,7 @@ namespace BulkyBook.DataAccess.DBInitializer
                 //if roles are not created, then we will create admin user as well
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "admin@bulky.com",
+                    UserName = "ezio",
                     Email = "admin@bulky.com",
                     Name = "Ezio Auditore",
                     PhoneNumber = "1112223333",

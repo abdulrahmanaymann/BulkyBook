@@ -105,7 +105,7 @@
                 {
                     user.Company = new Company()
                     {
-                        Name = ""
+                        Name = "NA"
                     };
                 }
             }

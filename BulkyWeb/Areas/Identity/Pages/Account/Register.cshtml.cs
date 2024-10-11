@@ -113,19 +113,19 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
         }
 
+
         public async Task OnGetAsync(string returnUrl = null)
         {
+
+
             Input = new()
             {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i =>
-                new SelectListItem
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
                 }),
-
-                CompanyList = _unitOfWork.CompanyRepository.GetAll().Select(i =>
-                new SelectListItem
+                CompanyList = _unitOfWork.CompanyRepository.GetAll().Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
@@ -140,15 +140,29 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            // Repopulate the role and company lists in case of validation failure
+            Input.RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+            {
+                Text = i,
+                Value = i
+            });
+
+            Input.CompanyList = _unitOfWork.CompanyRepository.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.Name = Input.Name;
                 user.StreetAddress = Input.StreetAddress;
                 user.City = Input.City;
+                user.Name = Input.Name;
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
@@ -193,14 +207,12 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                     {
                         if (User.IsInRole(SD.Role_Admin))
                         {
-                            TempData["Success"] = "User created successfully";
+                            TempData["success"] = "New User Created Successfully";
                         }
-
                         else
                         {
                             await _signInManager.SignInAsync(user, isPersistent: false);
                         }
-
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -210,9 +222,23 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
                 }
             }
 
+            // Repopulate the role and company lists if we are redisplaying the form due to validation failure
+            Input.RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+            {
+                Text = i,
+                Value = i
+            });
+
+            Input.CompanyList = _unitOfWork.CompanyRepository.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
 
         private ApplicationUser CreateUser()
         {

@@ -1,12 +1,11 @@
 ﻿@page
 @model RegisterModel
 
-
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-4">
         <div class="row">
             <div class="col-12 text-center">
-                @if(User.IsInRole(SD.Role_Admin))
+                @if (User.IsInRole(SD.Role_Admin))
                 {
                     <h2 class="py-2 text-white">Register - ADMIN PORTAL</h2>
                 }
@@ -48,6 +47,7 @@
                         <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password</label>
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
+
                     <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.StreetAddress" class="form-control" placeholder="name@example.com" />
                         <label asp-for="Input.StreetAddress" class="ms-2 text-muted">Street Address</label>
@@ -68,8 +68,8 @@
                         <label asp-for="Input.PostalCode" class="ms-2 text-muted">Postal Code</label>
                         <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                     </div>
-                    @* @if(User.IsInRole(SD.Role_Admin))
-                    { *@
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
                         <div class="form-floating mb-3 col-md-6">
                             <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                                 <option disabled selected>-Select Role-</option>
@@ -80,7 +80,7 @@
                                 <option disabled selected>-Select Company-</option>
                             </select>
                         </div>
-                    @* } *@
+                    }
                     <div class="col-12">
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                     </div>
@@ -91,7 +91,6 @@
                 <div class="col-md-12 p-3 text-center">
                     <section>
                         <p class="divider-text d-flex pt-3">or</p>
-                        @* <h3>Use another service to register.</h3> *@
 
                         @{
                             if ((Model.ExternalLogins?.Count ?? 0) == 0)
@@ -112,13 +111,32 @@
                                         <p>
                                             @foreach (var provider in Model.ExternalLogins!)
                                             {
-                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                                string iconClass = provider.Name.ToLower() switch
+                                                {
+                                                    "google" => "fab fa-google",
+                                                    "microsoft" => "fab fa-microsoft",
+                                                    "facebook" => "fab fa-facebook",
+                                                    _ => string.Empty
+                                                };
+                                                string color = provider.Name.ToLower() switch
+                                                {
+                                                    "google" => "#DB4437",
+                                                    "microsoft" => "#F25022",
+                                                    "facebook" => "#4267B2",
+                                                    _ => "#000"
+                                                };
+                                                <div style="display: inline-block; margin: 5px;">
+                                                    <button type="submit" class="btn" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" style="background-color: @color; border: none; color: white; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                                                        <i class="@iconClass" style="margin-right: 5px;"></i>@provider.DisplayName
+                                                    </button>
+                                                </div>
                                             }
                                         </p>
                                     </div>
                                 </form>
                             }
                         }
+
                     </section>
                 </div>
             }
@@ -130,14 +148,15 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function () {
-        $('#Input_Role').change(function () {
-            var selection = $('#Input_Role option:selected').text();
-            if (selection == 'Company') {
-                $('#Input_CompanyId').show();
-            } else {
-                $('#Input_CompanyId').hide();
-            }
-        });
-    });
+                $('#Input_Role').change(function(){
+                    var selection = $('#Input_Role Option:Selected').text();
+                    if(selection=='Company'){
+                        $('#Input_CompanyId').show();
+                    }
+                    else{
+                        $('#Input_CompanyId').hide();
+                    }
+                })
+            })
     </script>
 }
