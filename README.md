@@ -48,3 +48,22 @@ To log in as an admin, use the following credentials:
 - **Password**: `Admin123!`
 
 ### Screenshots
+## Admin Screens
+
+### Admin Home
+![Admin Home](ProjectImages/AdminHome.png)
+
+### Category List
+![Category List](ProjectImages/categoryList.png)
+
+### Manage Users
+![Manage Users 1](ProjectImages/manageuser1.png)
+![Manage Users 2](ProjectImages/managuser2.png)
+
+### Order Management
+![Order Management 1](ProjectImages/orderManage1.png)
+![Order Management 2](ProjectImages/ordermanage2.png)
+
+### Product List
+![Product List](ProjectImages/productList.png)
+
