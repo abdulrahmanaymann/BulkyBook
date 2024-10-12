@@ -62,6 +62,9 @@ To log in as an admin, use the following credentials:
 ### Category List
 ![Category List](ProjectImages/categoryList.png)
 
+### Create Users
+![Create Users](ProjectImages/createUser.png)
+
 ### Manage Users
 ![Manage Users 1](ProjectImages/manageuser1.png)
 ![Manage Users 2](ProjectImages/managuser2.png)
