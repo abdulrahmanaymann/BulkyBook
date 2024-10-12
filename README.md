@@ -48,6 +48,9 @@ To log in as an admin, use the following credentials:
 - **Password**: `Admin123!`
 
 ### Screenshots
+## Database Diagram
+![Database Diagram](ProjectImages/DatabaseDiagram.png)
+
 ## Admin Screens
 
 ### Admin Home
