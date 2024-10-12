@@ -67,3 +67,22 @@ To log in as an admin, use the following credentials:
 ### Product List
 ![Product List](ProjectImages/productList.png)
 
+## User Screens
+
+### User Home
+![User Home](ProjectImages/UserHome.png)
+
+### Payment Success
+![Payment Success](ProjectImages/paymentsucsses.png)
+
+### Order Overview
+![Order Overview](ProjectImages/order.png)
+
+### Order Details
+![Order Details](ProjectImages/DETAILS.png)
+
+### Checkout
+![Checkout](ProjectImages/checkout.png)
+
+### Add to Cart
+![Add to Cart](ProjectImages/addtocart.png)
