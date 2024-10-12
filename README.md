@@ -49,7 +49,7 @@ To log in as an admin, use the following credentials:
 
 ### Screenshots
 ## Database Diagram
-![Database Diagram](ProjectImages/DatabaseDiagram.png)
+![Database](ProjectImages/DatabaseDiagram.png)
 
 ## Admin Screens
 
