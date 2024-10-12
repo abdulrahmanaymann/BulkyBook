@@ -42,6 +42,9 @@ The application implements various design patterns, including Repository and Uni
 - **Log in** using your credentials or through social logins.
 - **Browse books**, add them to your cart, and proceed to checkout using Stripe for payments.
 
+### Live Demo
+You can try out the **BulkyBook MVC App** live [here](http://abdulrahman-ayman-bulkybook.runasp.net/).
+
 ### Admin Login Credentials
 To log in as an admin, use the following credentials:
 - **Email**: `admin@bulky.com`
