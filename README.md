@@ -94,7 +94,7 @@ To log in as an admin, use the following credentials:
 ![Login](ProjectImages/login.png)
 
 ### Register
-![Register](ProjectImages/register.png)
+![Register](ProjectImages/registerUser.png)
 
 ### Checkout
 ![Checkout](ProjectImages/checkout.png)
