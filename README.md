@@ -81,6 +81,12 @@ To log in as an admin, use the following credentials:
 ### Order Details
 ![Order Details](ProjectImages/DETAILS.png)
 
+### Login
+![Login](ProjectImages/login.png)
+
+### Register
+![Register](ProjectImages/register.png)
+
 ### Checkout
 ![Checkout](ProjectImages/checkout.png)
 
