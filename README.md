@@ -1,8 +1,8 @@
-# BulkyBook MVC App
+# E-Commerce Book Store  MVC App
 
 ## Description
 
-The **BulkyBook MVC App** is a feature-rich web application designed for managing book sales online. This project utilizes the MVC architecture of ASP.NET Core, providing a robust and scalable solution for e-commerce functionality. With integrated payment processing through Stripe and authentication options via Google, Facebook, and Microsoft, users can seamlessly navigate through a catalog of books, manage their accounts, and complete transactions securely.
+The **E-Commerce Book Store** is a feature-rich web application designed for managing book sales online. This project utilizes the MVC architecture of ASP.NET Core, providing a robust and scalable solution for e-commerce functionality. With integrated payment processing through Stripe and authentication options via Google, Facebook, and Microsoft, users can seamlessly navigate through a catalog of books, manage their accounts, and complete transactions securely.
 
 The application implements various design patterns, including Repository and Unit of Work, ensuring clean architecture and separation of concerns. The use of Dependency Injection enhances the app's testability and flexibility. The responsive front-end design leverages Bootstrap, ensuring a user-friendly experience across devices.
 
